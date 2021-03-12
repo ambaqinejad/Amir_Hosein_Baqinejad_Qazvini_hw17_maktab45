@@ -1,0 +1,30 @@
+{
+    "name": "ex1",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "start": "nodemon app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ambaqinejad/Amir_Hosein_Baqinejad_Qazvini_hw17_maktab45.git"
+    },
+    "author": "Amir Hosein Baqinejad",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ambaqinejad/Amir_Hosein_Baqinejad_Qazvini_hw17_maktab45/issues"
+    },
+    "homepage": "https://github.com/ambaqinejad/Amir_Hosein_Baqinejad_Qazvini_hw17_maktab45#readme",
+    "dependencies": {
+        "ejs": "^3.1.6",
+        "express": "^4.17.1",
+        "jalaali-js": "^1.1.5",
+        "jalali-moment": "^3.3.10",
+        "mongoose": "^5.11.18"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.7"
+    }
+}

@@ -1,0 +1,47 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    background-color: #272727;
+    color: white;
+}
+
+td,
+th {
+    border: 1px solid #000;
+    text-align: left;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #4b4a4a;
+    color: white;
+}
+
+tbody tr:hover {
+    background-color: #242323;
+    color: white;
+    cursor: pointer;
+}
+
+input {
+    border: 2px solid lightgray;
+    border-radius: 10px;
+}
+
+.display-none {
+    display: none;
+}
+
+.display-block {
+    display: block;
+}
+
+.error {
+    text-align: center;
+    color: red;
+}
