@@ -47,6 +47,31 @@ const create = (req, res, next) => {
     })
 }
 
+const remove = (req, res, next) => {
+    Office.findOneAndDelete({ _id: req.body.id }, (err, office) => {
+        if (err) {
+            return res.status(500).json({
+                message: 'Server Error',
+                error: err.message
+            })
+        }
+        return res.status(200).json(office);
+    })
+}
+
+const update = (req, res, next) => {
+    Office.findOneAndUpdate({ _id: req.body.id }, req.body, (err, office) => {
+        if (err) {
+            return res.status(500).json({
+                message: 'Server Error',
+                error: err.message
+            })
+        }
+        return res.status(200).json(office);
+    })
+}
+
+
 const getOfficeWithSpecificAge = (req, res, next) => {
     let age = +req.body.age;
     let date = new Date();
@@ -68,5 +93,7 @@ module.exports = {
     getAll,
     getOne,
     create,
+    remove,
+    update,
     getOfficeWithSpecificAge
 }

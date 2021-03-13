@@ -40,8 +40,8 @@ const create = (req, res, next) => {
             })
         }
 
-        if (req.body.isManager) {
-            Employee.find({ isManager: true, officeId: req.body.officeId }, (err, employee) => {
+        if (req.body.isManager === 'true') {
+            Employee.findOne({ isManager: true, officeId: req.body.officeId }, (err, employee) => {
                 if (err) {
                     return res.status(500).json({
                         message: 'Server Error',
@@ -73,6 +73,123 @@ const createEmployeeDocument = (req, res, office) => {
     })
 
     newEmployee.save((err, employee) => {
+        if (err) {
+            return res.status(500).json({
+                message: 'Server Error',
+                error: err.message
+            })
+        }
+        return res.status(200).json(employee);
+    })
+}
+
+const update = (req, res, next) => {
+    if (req.body.isManager === 'true' && req.body.officeId) {
+        Office.findOne({ _id: req.body.officeId }, (err, office) => {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Server Error',
+                    error: err.message
+                })
+            } else if (!office) {
+                return res.status(404).json({
+                    message: `Office with this id doesn't exist.`
+                })
+            } else {
+                Employee.findOne({ isManager: true, officeId: req.body.officeId }, (err, employee) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Server Error',
+                            error: err.message
+                        })
+                    } else if (employee) {
+                        return res.status(404).json({
+                            message: `Office already has manager.`
+                        })
+                    } else {
+                        Employee.findOneAndUpdate({ _id: req.body.id }, req.body, (err, employee) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: 'Server Error',
+                                    error: err.message
+                                })
+                            }
+                            return res.status(200).json(employee);
+                        })
+                    }
+                })
+            }
+        })
+    } else if (req.body.isManager === 'true' && !req.body.officeId) {
+        Employee.findOne({ _id: req.body.id }, (err, employee) => {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Server Error',
+                    error: err.message
+                })
+            }
+            Employee.findOne({ officeId: employee.officeId, isManager: true }, (err, employee) => {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Server Error',
+                        error: err.message
+                    })
+                } else if (employee) {
+                    return res.status(404).json({
+                        message: `Office already has manager.`
+                    })
+                } else {
+                    Employee.findOneAndUpdate({ _id: req.body.id }, req.body, (err, employee) => {
+                        if (err) {
+                            return res.status(500).json({
+                                message: 'Server Error',
+                                error: err.message
+                            })
+                        }
+                        return res.status(200).json(employee);
+                    })
+                }
+            })
+        })
+    } else if (!req.body.isManager && req.body.officeId) {
+        Office.findOne({ _id: req.body.officeId }, (err, office) => {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Server Error',
+                    error: err.message
+                })
+            } else if (!office) {
+                return res.status(404).json({
+                    message: `Office with this id doesn't exist.`
+                })
+            } else {
+                Employee.findOneAndUpdate({ _id: req.body.id }, req.body, (err, employee) => {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Server Error',
+                            error: err.message
+                        })
+                    }
+                    return res.status(200).json(employee);
+                })
+            }
+        })
+    } else {
+        console.log('4');
+        Employee.findOneAndUpdate({ _id: req.body.id }, req.body, (err, employee) => {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Server Error',
+                    error: err.message
+                })
+            }
+            return res.status(200).json(employee);
+        })
+    }
+}
+
+const remove = (req, res, next) => {
+    Employee.findOneAndDelete({ _id: req.body.id }, (err, employee) => {
         if (err) {
             return res.status(500).json({
                 message: 'Server Error',
@@ -151,6 +268,8 @@ module.exports = {
     getAll,
     getOne,
     create,
+    update,
+    remove,
     getManagers,
     getEmployeeByOfficeName,
     getOfficeManager,

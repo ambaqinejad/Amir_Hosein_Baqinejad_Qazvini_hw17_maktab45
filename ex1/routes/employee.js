@@ -10,11 +10,11 @@ router.get('/all', employeeController.getAll);
 router.get('/getManagers', employeeController.getManagers);
 router.get('/:id', employeeController.getOne);
 router.post('/create', employeeController.create);
+router.put('/update', employeeController.update);
+router.delete('/delete', employeeController.remove);
 // router.post('/getSpecific', employeeController.getSpecific);
 router.post('/getEmployeeByOfficeName', employeeController.getEmployeeByOfficeName);
 router.post('/getOfficeManager', employeeController.getOfficeManager);
 router.post('/getEmployeeBetweenTwoAges', employeeController.getEmployeeBetweenTwoAges);
-// router.put('/update', employeeController.update);
-// router.delete('/delete', employeeController.remove);
 
 module.exports = router;

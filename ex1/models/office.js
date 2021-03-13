@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const path = require('path');
+const employeeSchema = require(path.join(__dirname, 'employee.js'));
 
 const OfficeSchema = new Schema({
     name: {
@@ -46,5 +48,15 @@ const OfficeSchema = new Schema({
         minlength: 8
     }
 });
+
+OfficeSchema.post('findOneAndDelete', function() {
+    const officeId = this._conditions._id;
+    employeeSchema.deleteMany({ officeId }, (err, employees) => {
+        if (err) {
+            return console.log(err.message);
+        }
+        return console.log(employees);
+    })
+})
 
 module.exports = mongoose.model('Office', OfficeSchema);
