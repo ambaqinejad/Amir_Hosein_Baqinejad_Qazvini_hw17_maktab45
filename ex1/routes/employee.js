@@ -8,12 +8,13 @@ const router = express.Router();
 
 router.get('/all', employeeController.getAll);
 router.get('/getManagers', employeeController.getManagers);
+router.get('/officeAndManager', employeeController.officeAndManager);
 router.get('/:id', employeeController.getOne);
 router.post('/create', employeeController.create);
 router.put('/update', employeeController.update);
 router.delete('/delete', employeeController.remove);
-// router.post('/getSpecific', employeeController.getSpecific);
 router.post('/getEmployeeByOfficeName', employeeController.getEmployeeByOfficeName);
+router.post('/getEmployeeByOfficeId', employeeController.getEmployeeByOfficeId);
 router.post('/getOfficeManager', employeeController.getOfficeManager);
 router.post('/getEmployeeBetweenTwoAges', employeeController.getEmployeeBetweenTwoAges);
 

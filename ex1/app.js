@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const officeRouter = require(path.join(__dirname, 'routes', 'office.js'));
 const employeeRouter = require(path.join(__dirname, 'routes', 'employee.js'));
+const viewRouter = require(path.join(__dirname, 'routes', 'view.js'));
 
 const PORT = process.env.PORT || 3000;
 const DB_URI = 'mongodb://localhost:27017/OE';
@@ -27,6 +28,7 @@ mongoose.connect(
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')))
+app.use('/', viewRouter)
 app.use('/office', officeRouter);
 app.use('/employee', employeeRouter);
 

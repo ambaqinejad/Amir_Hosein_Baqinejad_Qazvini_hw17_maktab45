@@ -71,7 +71,6 @@ const createEmployeeDocument = (req, res, office) => {
         birthDate: req.body.birthDate,
         officeId: office._id
     })
-
     newEmployee.save((err, employee) => {
         if (err) {
             return res.status(500).json({
@@ -102,7 +101,7 @@ const update = (req, res, next) => {
                             message: 'Server Error',
                             error: err.message
                         })
-                    } else if (employee) {
+                    } else if (employee && (employee._id.toString() !== req.body.id)) {
                         return res.status(404).json({
                             message: `Office already has manager.`
                         })
@@ -228,6 +227,22 @@ const getEmployeeByOfficeName = (req, res, next) => {
     })
 }
 
+const getEmployeeByOfficeId = (req, res, next) => {
+    let specificEmployees = [];
+    Employee.find({}, { __v: false }).populate('officeId', { name: 1 }).exec((err, employees) => {
+        if (err) {
+            return res.status(500).json({
+                message: 'Server Error',
+                error: err.message
+            })
+        }
+        for (const employee of employees) {
+            employee.officeId._id.toString() === req.body.officeId ? specificEmployees.push(employee) : ''
+        }
+        return res.status(200).json(specificEmployees);
+    })
+}
+
 const getOfficeManager = (req, res, next) => {
     let specificEmployees = [];
     Employee.find({ isManager: true }, { firstName: 1, lastName: 1, _id: 0 })
@@ -264,6 +279,26 @@ const getEmployeeBetweenTwoAges = (req, res, next) => {
     })
 }
 
+const officeAndManager = (req, res, next) => {
+    let specificEmployees = [];
+    Employee.find({ isManager: true }, { __v: false }).populate('officeId', { name: 1 }).exec((err, employees) => {
+        if (err) {
+            return res.status(500).json({
+                message: 'Server Error',
+                error: err.message
+            })
+        }
+        for (const employee of employees) {
+            specificEmployees.push({
+                'firstName': employee.firstName,
+                'lastName': employee.lastName,
+                'officeName': employee.officeId.name
+            })
+        }
+        return res.status(200).json(specificEmployees);
+    })
+}
+
 module.exports = {
     getAll,
     getOne,
@@ -272,6 +307,8 @@ module.exports = {
     remove,
     getManagers,
     getEmployeeByOfficeName,
+    getEmployeeByOfficeId,
     getOfficeManager,
-    getEmployeeBetweenTwoAges
+    getEmployeeBetweenTwoAges,
+    officeAndManager
 }

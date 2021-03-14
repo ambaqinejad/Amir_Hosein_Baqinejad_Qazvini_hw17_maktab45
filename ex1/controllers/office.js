@@ -71,6 +71,17 @@ const update = (req, res, next) => {
     })
 }
 
+const updateAll = (req, res, next) => {
+    Office.updateMany({}, req.body, (err, offices) => {
+        if (err) {
+            return res.status(500).json({
+                message: 'Server Error',
+                error: err.message
+            })
+        }
+        return res.status(200).json(offices);
+    })
+}
 
 const getOfficeWithSpecificAge = (req, res, next) => {
     let age = +req.body.age;
@@ -95,5 +106,6 @@ module.exports = {
     create,
     remove,
     update,
+    updateAll,
     getOfficeWithSpecificAge
 }
